@@ -13,8 +13,16 @@ import commentRouter from "./router/comment-router.js";
 import adminRouter from "./router/admin-router.js";
 import notificationRouter from "./router/notification-router.js";
 import aiRouter from "./router/ai-router.js";
+import keepAlive from "./utils/keepAlive.js";
 const app = express();
-app.use(cors())
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://frontend-nishio.vercel.app",
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+}));
 // ============ MIDDLEWARES ============
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -56,10 +64,12 @@ const port = process.env.PORT || 5000;
 
 db()
   .then(() => {
-    app.listen(port, () => console.log(`\x1b[36mServer is running on port ${port}\x1b[0m`));
+    app.listen(port, () => {
+      console.log(`\x1b[36mServer is running on port ${port}\x1b[0m`);
+      keepAlive(); 
+    });
   })
   .catch((error) => {
     console.error("Mongoose connection failed: ", error.message);
     process.exit(1);
   });
-
