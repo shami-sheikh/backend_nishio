@@ -7,7 +7,7 @@ const keepAlive = () => {
     } catch (err) {
       console.error("Keep-alive failed:", err.message);
     }
-  }, 14 * 60 * 1000); // ping every 14 minutes
+  }, 14 * 60 * 1000); 
 };
 
 export default keepAlive;
