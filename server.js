@@ -15,19 +15,23 @@ import commentRouter from "./router/comment-router.js";
 import adminRouter from "./router/admin-router.js";
 import notificationRouter from "./router/notification-router.js";
 import aiRouter from "./router/ai-router.js";
-import chatRouter from "./router/chat-router.js"; 
+import chatRouter from "./router/chat-router.js";
 import keepAlive from "./utils/keepAlive.js";
 
 const app = express();
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-  "https://nishiogram.vercel.app",
-  ],
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "http://localhost:5000",
+      "https://nishiogram.vercel.app",
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  }),
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -66,7 +70,7 @@ initSocket(server);
 
 db()
   .then(() => {
-    server.listen(port, () => { 
+    server.listen(port, () => {
       console.log(`\x1b[36mServer is running on port ${port}\x1b[0m`);
       keepAlive();
     });
